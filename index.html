@@ -177,11 +177,7 @@
         <input type="text" id="dropoff" placeholder="City Centre">
       </div>
       <div class="form-group">
-        <label>Rental Duration (days)</label>
-        <input type="number" id="days" placeholder="3">
-      </div>
-      <div class="form-group">
-        <label>Rate per Day ($)</label>
+        <label>Rate ($)</label>
         <input type="number" id="rate" placeholder="80">
       </div>
       <div class="form-group">
@@ -213,8 +209,7 @@
             <th>Car Model</th>
             <th>Pickup</th>
             <th>Drop-off</th>
-            <th>Days</th>
-            <th>Rate/Day</th>
+            <th>Rate</th>
             <th>Extra</th>
             <th>Total</th>
           </tr>
@@ -224,7 +219,6 @@
             <td id="carTypeText"></td>
             <td id="pickupText"></td>
             <td id="dropoffText"></td>
-            <td id="daysText"></td>
             <td id="rateText"></td>
             <td id="extraText"></td>
             <td id="totalText"></td>
@@ -250,16 +244,15 @@
       const carType = document.getElementById('carType').value;
       const pickup = document.getElementById('pickup').value;
       const dropoff = document.getElementById('dropoff').value;
-      const days = parseInt(document.getElementById('days').value) || 0;
       const rate = parseFloat(document.getElementById('rate').value) || 0;
       const extra = parseFloat(document.getElementById('extra').value) || 0;
 
-      if (!clientName || !invoiceNo || !carType || !pickup || !dropoff || days <= 0 || rate <= 0) {
+      if (!clientName || !invoiceNo || !carType || !pickup || !dropoff || rate <= 0) {
         alert("⚠️ Please fill in all required fields correctly!");
         return;
       }
 
-      const total = (days * rate) + extra;
+      const total = rate + extra;
       const today = new Date().toLocaleDateString();
 
       document.getElementById('clientNameText').textContent = clientName;
@@ -267,7 +260,6 @@
       document.getElementById('carTypeText').textContent = carType;
       document.getElementById('pickupText').textContent = pickup;
       document.getElementById('dropoffText').textContent = dropoff;
-      document.getElementById('daysText').textContent = days;
       document.getElementById('rateText').textContent = rate.toFixed(2);
       document.getElementById('extraText').textContent = extra.toFixed(2);
       document.getElementById('totalText').textContent = total.toFixed(2);
