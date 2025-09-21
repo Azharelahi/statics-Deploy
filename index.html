@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: #f9fafc;
+      background: linear-gradient(135deg, #fdfbfb, #ebedee);
       margin: 0;
       height: 100vh;
       display: flex;
@@ -17,64 +17,77 @@
 
     .card {
       background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+      border-radius: 18px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.15);
       width: 95%;
-      max-width: 500px;
+      max-width: 950px;
       max-height: 90vh;
-      padding: 25px;
+      padding: 30px;
       display: flex;
       flex-direction: column;
       overflow-y: auto;
-      animation: fadeIn 0.5s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(10px);}
-      to {opacity: 1; transform: translateY(0);}
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       color: #111;
-      font-size: 24px;
+      font-size: 28px;
       background: #f1c40f;
-      padding: 10px;
-      border-radius: 10px;
+      padding: 12px;
+      border-radius: 12px;
+    }
+
+    /* Form layout */
+    .form-row {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
     }
 
     .form-group {
-      margin-bottom: 15px;
+      flex: 1;
+      min-width: 220px;
     }
 
     label {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
       display: block;
-      color: #333;
+      color: #444;
     }
 
     input {
       width: 100%;
-      padding: 8px 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
+      padding: 12px 14px;
+      border: 2px solid #eee;
+      border-radius: 10px;
       font-size: 14px;
+      transition: 0.3s;
+      box-sizing: border-box;
+    }
+
+    input:focus {
+      border-color: #f1c40f;
+      background: #fffdf5;
+      outline: none;
+      box-shadow: 0 0 8px rgba(241,196,15,0.4);
     }
 
     .btn {
       width: 100%;
-      padding: 12px;
-      border-radius: 8px;
+      padding: 14px;
+      border-radius: 10px;
       background: #f1c40f;
       color: #000;
       font-weight: bold;
+      font-size: 15px;
       border: none;
       transition: 0.3s ease;
       cursor: pointer;
-      margin-top: 10px;
+      margin-top: 12px;
     }
 
     .btn:hover {
@@ -82,20 +95,15 @@
       color: #fff;
     }
 
-    /* Invoice Preview */
+    /* Invoice */
     .invoice {
-      margin-top: 20px;
-      padding: 20px;
-      border: 2px solid #eee;
-      border-radius: 12px;
+      margin-top: 25px;
+      padding: 25px;
+      border: 2px solid #f1c40f;
+      border-radius: 15px;
       background: #fff;
       display: none;
-      animation: slideUp 0.4s ease;
-    }
-
-    @keyframes slideUp {
-      from {opacity: 0; transform: translateY(20px);}
-      to {opacity: 1; transform: translateY(0);}
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
     }
 
     .invoice-header {
@@ -103,103 +111,123 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 3px solid #f1c40f;
-      padding-bottom: 10px;
-      margin-bottom: 15px;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
     }
 
     .invoice-header img {
-      height: 40px;
+      height: 120px;
+    }
+
+    .invoice-header h2 {
+      margin: 0;
+      font-size: 26px;
+      color: #111;
     }
 
     .invoice-info {
-      font-size: 13px;
+      font-size: 15px;
       color: #555;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
+      line-height: 1.6;
     }
 
     .invoice-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 13px;
+      font-size: 14px;
+      margin-bottom: 15px;
     }
 
     .invoice-table th, .invoice-table td {
       border: 1px solid #ddd;
-      padding: 8px;
+      padding: 12px;
       text-align: left;
     }
 
     .invoice-table th {
-      background: #000;
+      background: #111;
       color: #fff;
+      letter-spacing: 0.5px;
     }
 
     .total {
       text-align: right;
-      margin-top: 10px;
-      font-size: 16px;
+      margin-top: 18px;
+      font-size: 18px;
       font-weight: bold;
+      color: #111;
     }
 
     .footer {
-      margin-top: 15px;
+      margin-top: 18px;
       text-align: center;
       font-size: 12px;
       color: #777;
       border-top: 1px solid #eee;
-      padding-top: 10px;
+      padding-top: 12px;
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <h1>🚖 OzLyft Invoice</h1>
+    <h1>🚖 OzLyft Car Hire Invoice</h1>
 
+    <!-- Invoice Form -->
     <div id="invoice-form">
-      <div class="form-group">
-        <label>Client Name</label>
-        <input type="text" id="clientName" placeholder="">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Client Name</label>
+          <input type="text" id="clientName">
+        </div>
+        <div class="form-group">
+          <label>Invoice Number</label>
+          <input type="text" id="invoiceNo">
+        </div>
       </div>
-      <div class="form-group">
-        <label>Invoice Number</label>
-        <input type="text" id="invoiceNo" placeholder="">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Car Type / Model</label>
+          <input type="text" id="carType">
+        </div>
+        <div class="form-group">
+          <label>Pickup Location</label>
+          <input type="text" id="pickup">
+        </div>
+        <div class="form-group">
+          <label>Drop-off Location</label>
+          <input type="text" id="dropoff">
+        </div>
       </div>
-      <div class="form-group">
-        <label>Car Type / Model</label>
-        <input type="text" id="carType" placeholder="">
-      </div>
-      <div class="form-group">
-        <label>Pickup Location</label>
-        <input type="text" id="pickup" placeholder="">
-      </div>
-      <div class="form-group">
-        <label>Drop-off Location</label>
-        <input type="text" id="dropoff" placeholder="">
-      </div>
-      <div class="form-group">
-        <label>Rate ($)</label>
-        <input type="number" id="rate" placeholder="">
-      </div>
-      <div class="form-group">
-        <label>Extra Charges ($)</label>
-        <input type="number" id="extra" placeholder="">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Rate ($)</label>
+          <input type="number" id="rate">
+        </div>
+        <div class="form-group">
+          <label>Extra Charges ($)</label>
+          <input type="number" id="extra">
+        </div>
       </div>
 
       <button class="btn" onclick="generateInvoice()">Generate Invoice</button>
     </div>
 
+    <!-- Invoice Preview -->
     <div id="invoice" class="invoice">
       <div class="invoice-header">
-        <img src="https://i.ibb.co/YdF6gjP/taxi-logo.png" alt="OzLyft Logo">
+        <img src="./pics/logo2.png" alt="OzLyft Logo">
         <div>
-          <h2 style="margin:0; color:#111;">INVOICE</h2>
+          <h2>INVOICE</h2>
           <p><strong>No:</strong> <span id="invoiceNoText"></span></p>
           <p><strong>Date:</strong> <span id="date"></span></p>
         </div>
       </div>
 
       <div class="invoice-info">
-        <p><strong>From:</strong> OzLyft Canberra, Australia</p>
+        <p><strong>From:</strong> OzLyft Car Hire, Canberra, Australia</p>
         <p><strong>To:</strong> <span id="clientNameText"></span></p>
       </div>
 
@@ -267,12 +295,25 @@
       document.getElementById('date').textContent = today;
 
       document.getElementById('invoice').style.display = 'block';
+      document.getElementById('invoice').scrollIntoView({behavior: 'smooth'});
     }
 
-    function downloadPDF() {
-      const element = document.getElementById("invoice");
-      html2pdf().from(element).save("OzLyft_CarHire_Invoice.pdf");
-    }
+   function downloadPDF() {
+  const element = document.getElementById("invoice");
+  const downloadBtn = element.querySelector(".btn"); // find the button inside invoice
+
+  // Hide the button before generating
+  downloadBtn.style.display = "none";
+
+  html2pdf()
+    .from(element)
+    .save("OzLyft_CarHire_Invoice.pdf")
+    .then(() => {
+     
+      downloadBtn.style.display = "block";
+    });
+}
+
   </script>
 </body>
 </html>
