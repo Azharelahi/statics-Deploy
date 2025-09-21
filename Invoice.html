@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OzLyft Car Hire Invoice</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #f9fafc;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      padding: 30px;
+      width: 1000px;
+      max-width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #111;
+      font-size: 30px;
+      background: #f1c40f;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      padding: 12px 20px;
+      border-radius: 8px;
+      background: #f1c40f;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      transition: 0.3s ease;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background: #000;
+      color: #fff;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    /* Invoice Styles */
+    .invoice {
+      margin-top: 40px;
+      padding: 30px;
+      border: 2px solid #eee;
+      border-radius: 12px;
+      background: #fff;
+      display: none;
+    }
+
+    .invoice-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid #f1c40f;
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+    }
+
+    .invoice-header img {
+      height: 60px;
+    }
+
+    .invoice-info {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .invoice-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .invoice-table th, .invoice-table td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .invoice-table th {
+      background: #000;
+      color: #fff;
+    }
+
+    .total {
+      text-align: right;
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 13px;
+      color: #777;
+      border-top: 1px solid #eee;
+      padding-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>OzLyft</h1>
+
+    <!-- Invoice Form -->
+    <div id="invoice-form">
+      <div class="form-group">
+        <label>Client Name</label>
+        <input type="text" id="clientName" placeholder="John Doe">
+      </div>
+      <div class="form-group">
+        <label>Invoice Number</label>
+        <input type="text" id="invoiceNo" placeholder="INV-001">
+      </div>
+      <div class="form-group">
+        <label>Car Type / Model</label>
+        <input type="text" id="carType" placeholder="Toyota Camry 2023">
+      </div>
+      <div class="form-group">
+        <label>Pickup Location</label>
+        <input type="text" id="pickup" placeholder="Canberra Airport">
+      </div>
+      <div class="form-group">
+        <label>Drop-off Location</label>
+        <input type="text" id="dropoff" placeholder="City Centre">
+      </div>
+      <div class="form-group">
+        <label>Rental Duration (days)</label>
+        <input type="number" id="days" placeholder="3">
+      </div>
+      <div class="form-group">
+        <label>Rate per Day ($)</label>
+        <input type="number" id="rate" placeholder="80">
+      </div>
+      <div class="form-group">
+        <label>Extra Charges ($)</label>
+        <input type="number" id="extra" placeholder="20">
+      </div>
+
+      <button class="btn" onclick="generateInvoice()">Generate Invoice</button>
+    </div>
+
+    <!-- Generated Invoice -->
+    <div id="invoice" class="invoice">
+      <div class="invoice-header">
+        <img src="https://i.ibb.co/YdF6gjP/taxi-logo.png" alt="OzLyft Logo">
+        <div>
+          <h2 style="margin:0; color:#111;">INVOICE</h2>
+          <p><strong>Invoice No:</strong> <span id="invoiceNoText"></span></p>
+          <p><strong>Date:</strong> <span id="date"></span></p>
+        </div>
+      </div>
+
+      <div class="invoice-info">
+        <p><strong>From:</strong> OzLyft Canberra, Australia</p>
+        <p><strong>To:</strong> <span id="clientNameText"></span></p>
+      </div>
+
+      <table class="invoice-table">
+        <thead>
+          <tr>
+            <th>Car Model</th>
+            <th>Pickup</th>
+            <th>Drop-off</th>
+            <th>Days</th>
+            <th>Rate/Day ($)</th>
+            <th>Extra ($)</th>
+            <th>Total ($)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="carTypeText"></td>
+            <td id="pickupText"></td>
+            <td id="dropoffText"></td>
+            <td id="daysText"></td>
+            <td id="rateText"></td>
+            <td id="extraText"></td>
+            <td id="totalText"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="total">Grand Total: $<span id="grandTotal"></span></p>
+      <button class="btn" onclick="downloadPDF()">Download Invoice</button>
+
+      <div class="footer">
+        <p>Thank you for choosing OzLyft. Safe & Reliable Rides in Canberra 🚖</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- html2pdf library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+  <script>
+    function generateInvoice() {
+      const clientName = document.getElementById('clientName').value;
+      const invoiceNo = document.getElementById('invoiceNo').value;
+      const carType = document.getElementById('carType').value;
+      const pickup = document.getElementById('pickup').value;
+      const dropoff = document.getElementById('dropoff').value;
+      const days = parseInt(document.getElementById('days').value) || 0;
+      const rate = parseFloat(document.getElementById('rate').value) || 0;
+      const extra = parseFloat(document.getElementById('extra').value) || 0;
+
+      if (!clientName || !invoiceNo || !carType || !pickup || !dropoff || days <= 0 || rate <= 0) {
+        alert("⚠️ Please fill in all required fields correctly!");
+        return;
+      }
+
+      const total = (days * rate) + extra;
+      const today = new Date().toLocaleDateString();
+
+      document.getElementById('clientNameText').textContent = clientName;
+      document.getElementById('invoiceNoText').textContent = invoiceNo;
+      document.getElementById('carTypeText').textContent = carType;
+      document.getElementById('pickupText').textContent = pickup;
+      document.getElementById('dropoffText').textContent = dropoff;
+      document.getElementById('daysText').textContent = days;
+      document.getElementById('rateText').textContent = rate.toFixed(2);
+      document.getElementById('extraText').textContent = extra.toFixed(2);
+      document.getElementById('totalText').textContent = total.toFixed(2);
+      document.getElementById('grandTotal').textContent = total.toFixed(2);
+      document.getElementById('date').textContent = today;
+
+      document.getElementById('invoice').style.display = 'block';
+    }
+
+    function downloadPDF() {
+      const element = document.getElementById("invoice");
+      html2pdf().from(element).save("OzLyft_CarHire_Invoice.pdf");
+    }
+  </script>
+</body>
+</html>
